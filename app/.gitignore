@@ -1,7 +1,8 @@
 # Byte-compiled files
 
 info_data.db
-
+news_summary.egg-info/
+database.db
 *.pyc
 *.pyo
 *.pyd
