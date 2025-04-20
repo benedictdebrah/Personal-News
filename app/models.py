@@ -10,7 +10,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Direct database connection string
-DATABASE_URL = "postgresql://neondb_owner:npg_yNf6PZwCQs8W@ep-odd-butterfly-a4utxto8-pooler.us-east-1.aws.neon.tech/newsdata?sslmode=require"
+DATABASE_URL = "fix yours"
 logger.info("Using direct database connection")
 
 # Create engine with PostgreSQL-specific settings
