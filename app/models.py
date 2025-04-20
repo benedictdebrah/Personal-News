@@ -4,8 +4,13 @@ from contextlib import contextmanager
 from datetime import datetime
 import os
 
-# Load database URL from environment variable (default to SQLite if not set)
-DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///database.db")
+# Get the absolute path to the app directory
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+# Create a data directory if it doesn't exist
+DATA_DIR = os.path.join(BASE_DIR, 'data')
+os.makedirs(DATA_DIR, exist_ok=True)
+# Use absolute path for database
+DATABASE_URL = f"sqlite:///{os.path.join(DATA_DIR, 'news.db')}"
 engine = create_engine(DATABASE_URL, echo=True)
 
 

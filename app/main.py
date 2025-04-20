@@ -146,7 +146,7 @@ def scrape_and_store_articles() -> None:
     
     page = 1
     total_articles = 0
-    max_articles = 100  
+    max_articles = 20  
     
     while total_articles < max_articles:
         data = collect_info(page)  

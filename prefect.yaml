@@ -1,0 +1,17 @@
+deployments:
+  - name: news-scraper
+    version: "1.0.0"
+    tags: ["news", "scraping"]
+    description: "Daily news scraping deployment"
+    schedule:
+      interval: 36000
+    work_pool:
+      name: news-scraper-pool
+    entrypoint: "app/main.py:scrape_and_store_articles"
+    parameters: {}
+    work_queue_name: "default"
+    storage:
+      type: git
+      repository: "https://github.com/yourusername/Personal-News.git"
+      reference: "main"
+
