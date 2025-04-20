@@ -4,7 +4,6 @@ from contextlib import contextmanager
 from datetime import datetime
 import os
 import logging
-from prefect_sqlalchemy import DatabaseCredentials
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
