@@ -1,4 +1,4 @@
-#!/Users/benedictdebrah/Desktop/Personal-News/.venv/bin/python3
+#!/Users/benedictdebrah/Desktop/Personal-News/.venv/bin/python
 # -*- coding: utf-8 -*-
 import sys
 from mako.cmd import cmdline

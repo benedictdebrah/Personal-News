@@ -3,15 +3,25 @@ from typing import Optional
 from contextlib import contextmanager
 from datetime import datetime
 import os
+import logging
+from prefect_sqlalchemy import DatabaseCredentials
 
-# Get the absolute path to the app directory
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-# Create a data directory if it doesn't exist
-DATA_DIR = os.path.join(BASE_DIR, 'data')
-os.makedirs(DATA_DIR, exist_ok=True)
-# Use absolute path for database
-DATABASE_URL = f"sqlite:///{os.path.join(DATA_DIR, 'news.db')}"
-engine = create_engine(DATABASE_URL, echo=True)
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+# Direct database connection string
+DATABASE_URL = "postgresql://neondb_owner:npg_yNf6PZwCQs8W@ep-odd-butterfly-a4utxto8-pooler.us-east-1.aws.neon.tech/newsdata?sslmode=require"
+logger.info("Using direct database connection")
+
+# Create engine with PostgreSQL-specific settings
+engine = create_engine(
+    DATABASE_URL,
+    echo=True,
+    pool_pre_ping=True,  
+    pool_size=5,         
+    max_overflow=10      
+)
 
 
 class InfoData(SQLModel, table=True):
@@ -40,18 +50,24 @@ class NewsData(SQLModel, table=True):
 
 def create_db_and_tables():
     """Initialize database and create tables."""
+    logger.info("Creating database and tables...")
     SQLModel.metadata.create_all(engine)
+    logger.info("Database and tables created successfully")
 
 
 @contextmanager
 def get_session():
     """Provide a transactional session."""
+    logger.info("Creating new database session")
     session = Session(engine)
     try:
         yield session
         session.commit()
-    except Exception:
+        logger.info("Session committed successfully")
+    except Exception as e:
         session.rollback()
+        logger.error(f"Session error: {str(e)}")
         raise
     finally:
         session.close()
+        logger.info("Session closed")

@@ -84,7 +84,7 @@ def insert_data(data: List[Dict]) -> None:
     """Insert metadata into InfoData and scrape detailed content for NewsData."""
     try:
         with get_session() as session:
-            logging.info(f"Inserting {len(data)} articles into the database.")
+            logging.info(f"Starting to insert {len(data)} articles into the database.")
             for info in data:
                 existing = session.query(InfoData).filter(
                     InfoData.link == info['link'],
@@ -98,6 +98,7 @@ def insert_data(data: List[Dict]) -> None:
                 info_record = InfoData(title=info['title'], link=info['link'])
                 session.add(info_record)
                 session.commit()
+                logging.info(f"Added new article: {info['title']}")
                 
                 scraped_data = get_content(info['link'])
                 if scraped_data:
@@ -108,10 +109,15 @@ def insert_data(data: List[Dict]) -> None:
                         info_id=info_record.id
                     )
                     session.add(news_record)
+                    session.commit()
                     logging.info(f"Added detailed content for: {info['title']}")
                 else:
                     logging.warning(f"Content not found for link: {info['link']}")
                 session.commit()
+            
+            # Verify the data was inserted
+            total_articles = session.query(InfoData).count()
+            logging.info(f"Total articles in database after insertion: {total_articles}")
     except Exception as e:
         logging.error(f"Error inserting data: {str(e)}")
         raise
@@ -146,7 +152,7 @@ def scrape_and_store_articles() -> None:
     
     page = 1
     total_articles = 0
-    max_articles = 20  
+    max_articles = 20  # you can change it to your desired number of news
     
     while total_articles < max_articles:
         data = collect_info(page)  
