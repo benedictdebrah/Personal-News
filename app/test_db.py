@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 def test_database_connection():
     try:
         # Direct database connection string
-        DATABASE_URL = "postgresql://neondb_owner:npg_yNf6PZwCQs8W@ep-odd-butterfly-a4utxto8-pooler.us-east-1.aws.neon.tech/newsdata?sslmode=require"
+        DATABASE_URL = "fix yours"
         
         # Create engine
         engine = create_engine(DATABASE_URL)
